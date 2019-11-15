@@ -6,7 +6,7 @@
 /*   By: jdussert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 11:31:33 by jdussert          #+#    #+#             */
-/*   Updated: 2019/11/15 11:14:31 by jdussert         ###   ########.fr       */
+/*   Updated: 2019/11/15 19:30:13 by jdussert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	ft_read(int fd, char **line, char **stock, char **buffer)
 
 	while ((ret = read(fd, *buffer, BUFFER_SIZE)))
 	{
+		buffer[0][ret] = '\0';
 		if (ret == -1)
 			return (ft_free(stock, buffer, -1));
 		if (!(tmp = ft_strdup(line[0])))
