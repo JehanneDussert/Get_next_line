@@ -6,7 +6,7 @@
 /*   By: jdussert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 11:31:33 by jdussert          #+#    #+#             */
-/*   Updated: 2019/11/15 19:30:13 by jdussert         ###   ########.fr       */
+/*   Updated: 2019/11/18 11:55:22 by jdussert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_free(char **stock, char **buffer, int ret)
 		free(*buffer);
 		*buffer = NULL;
 	}
-	if (ret == 0 || ret == -1)
+	if ((ret == 0 || ret == -1) && *stock)
 	{
 		free(*stock);
 		*stock = NULL;
@@ -35,19 +35,21 @@ int	ft_stock(char **line, char **stock, char **buffer)
 
 	if (ft_strchr(*stock, '\n'))
 	{
-		if (!(tmp = ft_strdup(*stock)))
+		if (!(tmp = ft_substr(*stock, 0, ft_strlen(*stock))))
 			return (ft_free(stock, buffer, -1));
 		len = ft_strchr(*stock, '\n') - *stock;
 		if (!(line[0] = ft_substr(*stock, 0, len)))
 			return (ft_free(stock, buffer, -1));
 		free(*stock);
 		*stock = NULL;
-		if (!(*stock = ft_strdup(ft_strchr(tmp, '\n') + 1)))
+		if (!(*stock = ft_substr(ft_strchr(tmp, '\n') + 1, 0, ft_strlen(tmp))))
 			return (ft_free(stock, buffer, -1));
 		free(tmp);
+		tmp = NULL;
+		printf("stock [%s]\n", *stock);
 		return (1);
 	}
-	if (!(line[0] = ft_strdup(*stock)))
+	if (!(line[0] = ft_substr(*stock, 0, ft_strlen(*stock))))
 		return (ft_free(stock, buffer, -1));
 	*stock = NULL;
 	return (0);
@@ -59,14 +61,16 @@ int	ft_restock(char **line, char **stock, char **buffer)
 	char	*tmp;
 
 	len = ft_strchr(line[0], '\n') - line[0];
-	if (!(*stock = ft_strdup(ft_strchr(line[0], '\n') + 1)))
+	if (!(*stock =
+				ft_substr(ft_strchr(line[0], '\n') + 1, 0, ft_strlen(line[0]))))
 		return (ft_free(stock, buffer, -1));
-	if (!(tmp = ft_strdup(line[0])))
+	if (!(tmp = ft_substr(line[0], 0, ft_strlen(line[0]))))
 		return (ft_free(stock, buffer, -1));
 	free(line[0]);
 	line[0] = NULL;
 	if (!(line[0] = ft_substr(tmp, 0, len)))
 		return (ft_free(stock, buffer, -1));
+	printf("stock [%s]\n", *stock);
 	free(tmp);
 	tmp = NULL;
 	return (1);
@@ -80,9 +84,10 @@ int	ft_read(int fd, char **line, char **stock, char **buffer)
 	while ((ret = read(fd, *buffer, BUFFER_SIZE)))
 	{
 		buffer[0][ret] = '\0';
+		printf("buff [%s]\n", *buffer);
 		if (ret == -1)
 			return (ft_free(stock, buffer, -1));
-		if (!(tmp = ft_strdup(line[0])))
+		if (!(tmp = ft_substr(line[0], 0, ft_strlen(line[0]))))
 			return (ft_free(stock, buffer, -1));
 		free(line[0]);
 		line[0] = NULL;
