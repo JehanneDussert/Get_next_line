@@ -6,11 +6,10 @@
 /*   By: jdussert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 11:31:33 by jdussert          #+#    #+#             */
-/*   Updated: 2019/11/18 11:55:22 by jdussert         ###   ########.fr       */
+/*   Updated: 2019/11/18 16:00:47 by jdussert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "get_next_line.h"
 
 int	ft_free(char **stock, char **buffer, int ret)
@@ -33,24 +32,26 @@ int	ft_stock(char **line, char **stock, char **buffer)
 	int		len;
 	char	*tmp;
 
+	free(line[0]);
+	line[0] = NULL;
 	if (ft_strchr(*stock, '\n'))
 	{
 		if (!(tmp = ft_substr(*stock, 0, ft_strlen(*stock))))
 			return (ft_free(stock, buffer, -1));
-		len = ft_strchr(*stock, '\n') - *stock;
-		if (!(line[0] = ft_substr(*stock, 0, len)))
-			return (ft_free(stock, buffer, -1));
 		free(*stock);
 		*stock = NULL;
+		len = ft_strchr(tmp, '\n') - tmp;
+		if (!(line[0] = ft_substr(tmp, 0, len)))
+			return (ft_free(stock, buffer, -1));
 		if (!(*stock = ft_substr(ft_strchr(tmp, '\n') + 1, 0, ft_strlen(tmp))))
 			return (ft_free(stock, buffer, -1));
 		free(tmp);
 		tmp = NULL;
-		printf("stock [%s]\n", *stock);
 		return (1);
 	}
 	if (!(line[0] = ft_substr(*stock, 0, ft_strlen(*stock))))
 		return (ft_free(stock, buffer, -1));
+	free(*stock);
 	*stock = NULL;
 	return (0);
 }
@@ -60,17 +61,15 @@ int	ft_restock(char **line, char **stock, char **buffer)
 	int		len;
 	char	*tmp;
 
-	len = ft_strchr(line[0], '\n') - line[0];
-	if (!(*stock =
-				ft_substr(ft_strchr(line[0], '\n') + 1, 0, ft_strlen(line[0]))))
-		return (ft_free(stock, buffer, -1));
 	if (!(tmp = ft_substr(line[0], 0, ft_strlen(line[0]))))
 		return (ft_free(stock, buffer, -1));
 	free(line[0]);
 	line[0] = NULL;
+	len = ft_strchr(tmp, '\n') - tmp;
+	if (!(*stock = ft_substr(ft_strchr(tmp, '\n') + 1, 0, ft_strlen(tmp))))
+		return (ft_free(stock, buffer, -1));
 	if (!(line[0] = ft_substr(tmp, 0, len)))
 		return (ft_free(stock, buffer, -1));
-	printf("stock [%s]\n", *stock);
 	free(tmp);
 	tmp = NULL;
 	return (1);
@@ -84,7 +83,6 @@ int	ft_read(int fd, char **line, char **stock, char **buffer)
 	while ((ret = read(fd, *buffer, BUFFER_SIZE)))
 	{
 		buffer[0][ret] = '\0';
-		printf("buff [%s]\n", *buffer);
 		if (ret == -1)
 			return (ft_free(stock, buffer, -1));
 		if (!(tmp = ft_substr(line[0], 0, ft_strlen(line[0]))))
