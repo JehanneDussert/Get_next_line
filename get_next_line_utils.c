@@ -6,15 +6,11 @@
 /*   By: jdussert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:54:08 by jdussert          #+#    #+#             */
-/*   Updated: 2019/11/18 11:57:59 by jdussert         ###   ########.fr       */
+/*   Updated: 2019/11/19 10:11:18 by jdussert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+#include "get_next_line.h"
 
 void	*ft_calloc(size_t count, size_t size)
 {
@@ -47,7 +43,7 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strchr(char *s, char c)
+char	*ft_strchr(char *s, int c)
 {
 	while (*s != c)
 	{

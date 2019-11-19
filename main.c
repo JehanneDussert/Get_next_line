@@ -6,12 +6,13 @@
 /*   By: jdussert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:55:43 by jdussert          #+#    #+#             */
-/*   Updated: 2019/11/18 16:02:06 by jdussert         ###   ########.fr       */
+/*   Updated: 2019/11/19 10:20:29 by jdussert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "get_next_line.h"
+# include <fcntl.h>
 
 int	main(void)
 {
@@ -30,6 +31,6 @@ int	main(void)
 	printf("%d:%s\n", n, line);
 	free(line);
 	// Pour gerer les leaks //
-	while (1);
+//	while (1);
 	return (0);
 }
